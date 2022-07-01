@@ -16,7 +16,7 @@ async def on_ready():
 
 @bot.command()
 async def help(ctx):
-    file = "\nBot Prefix : !\n\nCommands:\n   !load {name of save} | use it to load a save server.\n   !save {name of new save} | use it to save current server.\n   !allSave | use it to show all your save.\n   !content {name of save} | use it to shows content of specifique save.\n   !delete {name of save} | use it to delete a save"
+    file = "\nBot Prefix : !\n\nCommands:\n   !clean | delet all channel of server\n   !load {name of save} | use it to load a save server.\n   !save {name of new save} | use it to save current server.\n   !allSave | use it to show all your save.\n   !content {name of save} | use it to shows content of specifique save.\n   !delete {name of save} | use it to delete a save"
     embed = discord.Embed(title="Help menu", description=file, color=0x82c73d)
     await ctx.send(embed=embed)
 
@@ -44,6 +44,15 @@ async def allSave(ctx):
     for i in files: file = f"{file}\n{i.replace(r'.json', '', 1)}"
     embed = discord.Embed(title="All save :", description=file, color=0x82c73d)
     await ctx.send(embed=embed)
+
+@bot.command()
+async def clean(ctx):
+    await ctx.message.guild.edit(name=f"CLEAN")
+    await ctx.message.delete()
+    for channel in ctx.message.guild.voice_channels: await channel.delete()
+    for channel in ctx.message.guild.text_channels: await channel.delete()
+    for category in ctx.message.guild.categories: await category.delete()
+    await ctx.message.guild.create_text_channel(f"Clean")
 
 @bot.command()
 async def content(ctx, args):
